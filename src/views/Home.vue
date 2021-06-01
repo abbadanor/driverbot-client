@@ -13,24 +13,24 @@ export default {
   data() {
     return {
       connection: {
-        host: 'broker.emqx.io',
-        port: 8083,
+        host: 'maqiatto.com',
+        port: 8883,
         endpoint: '/mqtt',
         clean: true,
         connectTimeout: 4000,
         reconnectPeriod: 4000,
         clientId: 'mqttjs_3be2c321',
-        username: 'emqx_test',
-        password: 'emqx_test',
+        username: 'adam.nord@abbindustrigymnasium.se',
+        password: 'password',
       },
       subscription: {
-        topic: 'topic/mqttx',
+        topic: 'adam.nord@abbindustrigymnasium.se/drive',
         qos: 0,
       },
       publish: {
         topic: 'topic/browser',
         qos: 0,
-        payload: '{ "msg": "Hello, I am browser." }',
+        payload: 'd1023',
       },
       receiveNews: '',
       qosList: [
