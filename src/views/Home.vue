@@ -1,6 +1,19 @@
 <template>
   <div class="home-container">
+    <el-button
+              type="success"
+              size="small"
+              class="conn-btn"
+              style="margin-right: 20px;"
+              :disabled="client.connected"
+              @click="createConnection"
+            >
+              {{ client.connected ? 'Connected' : 'Connect' }}
+            </el-button>
 
+    <el-button :disabled="!client.connected" type="success" size="small" class="publish-btn" @click="doPublish">
+          Publish
+    </el-button>
   </div>
 </template>
 
@@ -28,7 +41,7 @@ export default {
         qos: 0,
       },
       publish: {
-        topic: 'topic/browser',
+        topic: 'adam.nord@abbindustrigymnasium.se/drive',
         qos: 0,
         payload: 'd1023',
       },
