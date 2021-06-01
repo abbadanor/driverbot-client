@@ -1,18 +1,7 @@
 <template>
-  <div class="home-container">
-    <el-button
-              type="success"
-              size="small"
-              class="conn-btn"
-              style="margin-right: 20px;"
-              :disabled="client.connected"
-              @click="createConnection"
-            >
-              {{ client.connected ? 'Connected' : 'Connect' }}
-            </el-button>
-
+  <div class="home-container" v-loading.fullscreen.lock="!client.connected">
     <el-button :disabled="!client.connected" type="success" size="small" class="publish-btn" @click="doPublish">
-          Publish
+      Publish
     </el-button>
   </div>
 </template>
@@ -31,7 +20,7 @@ export default {
         endpoint: '/mqtt',
         clean: true,
         connectTimeout: 4000,
-        reconnectPeriod: 4000,
+        reconnectPeriod: 0,
         clientId: 'mqttjs_3be2c321',
         username: 'adam.nord@abbindustrigymnasium.se',
         password: 'password',
@@ -55,9 +44,17 @@ export default {
         connected: false,
       },
       subscribeSuccess: false,
+      fullScreenLoading: false,
     }
   },
   methods: {
+    openFullScreen1() {
+      console.log('hej')
+      this.fullScreenLoading = true
+      setTimeout(() => {
+        this.fullScreenLoading = false
+      }, 2000)
+    },
     createConnection() {
       const { host, port, endpoint, ...options } = this.connection
       const connectUrl = `ws://${host}:${port}${endpoint}`
@@ -69,7 +66,7 @@ export default {
       this.client.on('connect', () => {
         console.log('Connection succeeded!')
       })
-      this.client.on('error', error => {
+      this.client.on('error', (error) => {
         console.log('Connection failed', error)
       })
       this.client.on('message', (topic, message) => {
@@ -77,46 +74,19 @@ export default {
         console.log(`Received message ${message} from topic ${topic}`)
       })
     },
-    doSubscribe() {
-      const { topic, qos } = this.subscription
-      this.client.subscribe(topic, { qos }, (error, res) => {
-        if (error) {
-          console.log('Subscribe to topics error', error)
-          return
-        }
-        this.subscribeSuccess = true
-        console.log('Subscribe to topics res', res)
-      })
-    },
-    doUnSubscribe() {
-      const { topic } = this.subscription
-      this.client.unsubscribe(topic, error => {
-        if (error) {
-          console.log('Unsubscribe error', error)
-        }
-      })
-    },
     doPublish() {
       const { topic, qos, payload } = this.publish
-      this.client.publish(topic, payload, qos, error => {
+      this.client.publish(topic, payload, qos, (error) => {
         if (error) {
           console.log('Publish error', error)
         }
       })
     },
-    destroyConnection() {
-      if (this.client.connected) {
-        try {
-          this.client.end()
-          this.client = {
-            connected: false,
-          }
-          console.log('Successfully disconnected!')
-        } catch (error) {
-          console.log('Disconnect failed', error.toString())
-        }
-      }
-    },
+  },
+    mounted() {
+    this.$nextTick(function () {
+      this.createConnection()
+    })
   },
 }
 </script>
@@ -136,7 +106,7 @@ export default {
 
   .publish-btn {
     margin-bottom: 20px;
-    float: right;
+    float: left;
   }
 
   .el-button--success {
