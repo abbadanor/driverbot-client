@@ -16,10 +16,9 @@ export default {
         host: 'broker.emqx.io',
         port: 8083,
         endpoint: '/mqtt',
-        clean: true, // 保留会话
-        connectTimeout: 4000, // 超时时间
-        reconnectPeriod: 4000, // 重连时间间隔
-        // 认证信息
+        clean: true,
+        connectTimeout: 4000,
+        reconnectPeriod: 4000,
         clientId: 'mqttjs_3be2c321',
         username: 'emqx_test',
         password: 'emqx_test',
@@ -46,15 +45,7 @@ export default {
     }
   },
   methods: {
-    // 创建连接
     createConnection() {
-      // 连接字符串, 通过协议指定使用的连接方式
-      // ws 未加密 WebSocket 连接
-      // wss 加密 WebSocket 连接
-      // mqtt 未加密 TCP 连接
-      // mqtts 加密 TCP 连接
-      // wxs 微信小程序连接
-      // alis 支付宝小程序连接
       const { host, port, endpoint, ...options } = this.connection
       const connectUrl = `ws://${host}:${port}${endpoint}`
       try {
@@ -73,7 +64,6 @@ export default {
         console.log(`Received message ${message} from topic ${topic}`)
       })
     },
-    // 订阅主题
     doSubscribe() {
       const { topic, qos } = this.subscription
       this.client.subscribe(topic, { qos }, (error, res) => {
@@ -85,7 +75,6 @@ export default {
         console.log('Subscribe to topics res', res)
       })
     },
-    // 取消订阅
     doUnSubscribe() {
       const { topic } = this.subscription
       this.client.unsubscribe(topic, error => {
@@ -94,7 +83,6 @@ export default {
         }
       })
     },
-    // 发送消息
     doPublish() {
       const { topic, qos, payload } = this.publish
       this.client.publish(topic, payload, qos, error => {
@@ -103,7 +91,6 @@ export default {
         }
       })
     },
-    // 断开连接
     destroyConnection() {
       if (this.client.connected) {
         try {
