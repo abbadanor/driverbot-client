@@ -6,7 +6,7 @@
     <el-card>
       <h1>Drive</h1>
       <el-row>
-        <el-col :span="2" offset="9">
+        <el-col :span="2" offset=9>
           <el-button @click="setDirection(1, -1)" :type="getTurn(1, -1)" icon="el-icon-top-left" circle></el-button>
         </el-col>
         <el-col :span="2">
@@ -17,7 +17,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="2" offset="9">
+        <el-col :span="2" offset=9>
           <el-button @click="setDirection(0, -1)" :type="getTurn(0, -1)" icon="el-icon-back" circle></el-button>
         </el-col>
         <el-col :span="2">
@@ -28,7 +28,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="2" offset="9">
+        <el-col :span="2" offset=9>
           <el-button
             @click="setDirection(-1, -1)"
             :type="getTurn(-1, -1)"
@@ -117,8 +117,6 @@ export default {
       ],
       driveDirection: 0,
       turnDirection: 0,
-      driveValue: 0,
-      turnValue: 90,
     }
   },
   methods: {
@@ -156,8 +154,13 @@ export default {
     },
     updateDirection() {
       let map = (value, x1, y1, x2, y2) => ((value - x1) * (y2 - x2)) / (y1 - x1) + x2
-      this.driveValue = map(this.driveDirection, -1, 1, -1023, 1023)
-      this.turnValue = map(this.turnDirection, -1, 1, 0, 180)
+      let driveValue = map(this.driveDirection, -1, 1, -1023, 1023)
+      let turnValue = map(this.turnDirection, -1, 1, 30, 180)
+      
+      this.publish.payload = 'd' + driveValue + ',t' + turnValue
+
+      console.log(this.publish.payload)
+      this.doPublish();
     },
     getTurn(drive, turn) {
       if (drive == this.driveDirection && turn == this.turnDirection) return 'primary'
