@@ -74,7 +74,7 @@ export default {
         connectTimeout: 4000,
         reconnectPeriod: 0,
         clientId: 'mqttjs_3be2c321',
-        username: 'fladam',
+        username: 'abbadanor',
         password: 'euYB9zYt9jDKKb6',
       },
       subscription: {
@@ -108,7 +108,7 @@ export default {
         },
         {
           name: 'Username',
-          value: 'fladam',
+          value: 'abbadanor',
         },
         {
           name: 'Password',
